@@ -1,0 +1,47 @@
+{
+  "0": {
+    "name": "water",
+    "color": "#419bdf",
+    "impact": "Oceans, rivers, lakes; absorbs light; may resemble shadows or dark surfaces"
+  },
+  "1": {
+    "name": "trees",
+    "color": "#397d49",
+    "impact": "Dense woody vegetation; forests and woodlands; strong canopy structure; may resemble tall shrubs"
+  },
+  "2": {
+    "name": "grass",
+    "color": "#88b053",
+    "impact": "Low herbaceous vegetation; croplands and lawns; seasonal variation; may resemble sparse shrubs"
+  },
+  "3": {
+    "name": "flooded_vegetation",
+    "color": "#7a87c6",
+    "impact": "Vegetation mixed with standing water; wetlands and mangroves; variable reflectance; may resemble water or marsh"
+  },
+  "4": {
+    "name": "crops",
+    "color": "#e49635",
+    "impact": "Cultivated agricultural land; seasonal growth cycles; may resemble grass or bare soil"
+  },
+  "5": {
+    "name": "shrub_and_scrub",
+    "color": "#dfc35a",
+    "impact": "Low woody vegetation; semi-arid ecosystems; may resemble grass or sparse trees"
+  },
+  "6": {
+    "name": "built",
+    "color": "#c4281b",
+    "impact": "Human-made surfaces; urban development; may resemble bare soil or dry fields"
+  },
+  "7": {
+    "name": "bare",
+    "color": "#a59b8f",
+    "impact": "Exposed soil or rock; minimal vegetation; may resemble built areas"
+  },
+  "8": {
+    "name": "snow_and_ice",
+    "color": "#b39fe1",
+    "impact": "Frozen surfaces; high reflectance; may resemble clouds or bright rooftops"
+  }
+}
