@@ -1,4 +1,4 @@
-from gee_fetch import get_dw_data, get_city_coords, dates as DATES
+from modules.gee_fetch import get_dw_data
 import ee
 
 landcover_classes = {
@@ -49,77 +49,34 @@ landcover_classes = {
   }
 }
 
-
-def get_landcover_analysis(entry: dict) -> dict | None:
-    if entry["count"] == 0 or entry["collection"] is None:
-        print(f"[landcover] Skipping ({entry['lat']}, {entry['lon']}) {entry['start']}→{entry['end']} — no imagery")
-        return None
- 
-    collection: ee.ImageCollection = entry["collection"]
-    region: ee.Geometry = entry["region"]
- 
-    try:
-        composite = collection.select("label").reduce(ee.Reducer.mode()).clip(region)
- 
-        stats = composite.reduceRegion(
-            reducer=ee.Reducer.frequencyHistogram(),
-            geometry=region,
-            scale=10,
-            maxPixels=1e9,
-        )
- 
-        histogram: dict = stats.getInfo()
- 
-        if len(histogram) == 1:
-            histogram = list(histogram.values())[0]
- 
-        if not histogram:
-            print(f"[landcover] Empty histogram for ({entry['lat']}, {entry['lon']})")
-            return None
- 
-        total_pixels = sum(histogram.values())
-        percentages: dict[str, float] = {}
-        confidence: dict[str, float] = {}
- 
-        for key, count in histogram.items():
-            class_info = landcover_classes.get(str(key))
-            class_name = class_info["name"] if class_info else f"class_{key}"
-            pct = (count / total_pixels) * 100
-            percentages[class_name] = round(pct, 2)
-            confidence[class_name] = round(pct / 100, 4)
- 
-        return {
-            "lat": entry["lat"],
-            "lon": entry["lon"],
-            "start": entry["start"],
-            "end": entry["end"],
-            "percentages": percentages,
-            "confidence": confidence,
-        }
- 
-    except Exception as exc:
-        print(f"[landcover] Analysis failed ({entry['lat']}, {entry['lon']}) {entry['start']}→{entry['end']}: {exc}")
-        return None
- 
- 
-def run_all(locations: list[dict] | None = None, dates: list[dict] | None = None, buffer_meters: int = 1500) -> list[dict]:
-    locations = locations or get_city_coords()
-    dates = dates or DATES
- 
-    raw_entries = get_dw_data(locations, dates, buffer_meters)
-    results = []
- 
-    for entry in raw_entries:
-        analysis = get_landcover_analysis(entry)
-        if analysis is not None:
-            results.append(analysis)
- 
-    return results
- 
- 
-if __name__ == "__main__":
-    results = run_all()
-    for r in results:
-        print(f"\n({r['lat']}, {r['lon']})  {r['start']} → {r['end']}")
-        for cls, pct in sorted(r["percentages"].items(), key=lambda x: -x[1]):
-            print(f"  {cls:<20}  {pct:6.2f}%   confidence={r['confidence'][cls]:.4f}")
+def get_landcover_analysis(lon, lat, start_date, end_date, buffer_meters=1500):
+    collection = get_dw_data(lon, lat, start_date, end_date, buffer_meters)  # ← fixed: 4 spaces now
+    point = ee.Geometry.Point([lon, lat])
+    region = point.buffer(buffer_meters).bounds()
+    classification = collection.select('label')
+    composite = classification.reduce(ee.Reducer.mode())
+    stats = composite.reduceRegion(
+        reducer=ee.Reducer.frequencyHistogram(),
+        geometry=region,
+        scale=10,
+        maxPixels=1e9
+    )
+    histogram = stats.getInfo()
+    if len(histogram) == 1:
+        histogram = list(histogram.values())[0]
+    total_pixels = sum(histogram.values())
+    percentages = {}
+    confidence_scores = {}
+    for key, value in histogram.items():
+        class_info = landcover_classes.get(str(key))
+        if class_info:
+            class_name = class_info["name"]
+        else:
+            class_name = str(key)
+        percentage = (value / total_pixels) * 100
+        percentages[class_name] = round(percentage, 2)
+        confidence_scores[class_name] = round(percentage / 100, 2)
+    return {
+        'percentages': percentages,
+        'confidence': confidence_scores
+    }
