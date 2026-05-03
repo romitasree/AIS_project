@@ -1,38 +1,35 @@
-# romita_change.py
-# Calculate percentage change in land cover types between historical and recent data.
-# Output is used for Plotly visualisation and Gemini prompting.
+# Calculate percentage change in land cover types between historical and recent data
+# Output will be used later for Plotly visualization
 
-def calculate_percentage_change(historical: dict, recent: dict) -> dict:
-    """
-    Calculate the percentage-point difference for each land-cover class.
+from dummy_landcover_data import historical_percentages, recent_percentages
 
-    Parameters
-    ----------
-    historical : dict
-        Land-cover percentages for the earlier period.
-    recent : dict
-        Land-cover percentages for the more recent period.
+# Calculates percentage change for each land cover type
+# Arguments:
+# historical (dict): earlier percentages
+# recent (dict): recent percentages
+# Returns:
+# dict: percentage change for each land cover type
+def calculate_percentage_change(historical, recent):
 
-    Returns
-    -------
-    dict
-        {class_name: delta_pp, ...}  — positive means the class grew.
-    """
-    all_keys = set(historical) | set(recent)
     change_dict = {}
-    for land_type in all_keys:
+
+    for land_type in historical:
         old_value = historical.get(land_type, 0)
         new_value = recent.get(land_type, 0)
-        change_dict[land_type] = round(new_value - old_value, 4)
+
+        change = new_value - old_value
+        change_dict[land_type] = change
+
     return change_dict
 
 
-# ── Quick self-test with dummy data ───────────────────────────────────────────
+# Run test with dummy data
 if __name__ == "__main__":
-    from dummy_landcover_data import historical_percentages, recent_percentages
 
-    changes = calculate_percentage_change(historical_percentages, recent_percentages)
+    changes = calculate_percentage_change(
+        historical_percentages,
+        recent_percentages
+    )
+
     print("Land Cover Percentage Changes:")
-    for cls, delta in sorted(changes.items(), key=lambda x: -abs(x[1])):
-        bar = "▲" if delta > 0 else ("▼" if delta < 0 else "–")
-        print(f"  {bar} {cls:<25} {delta:+.2f} pp")
+    print(changes)

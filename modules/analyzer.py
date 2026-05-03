@@ -1,4 +1,4 @@
-from gee_fetch import get_dw_data, get_city_coords, dates as DATES
+from gee_fetch import get_dw_data, get_city_coords, DATES
 import ee
 
 landcover_classes = {

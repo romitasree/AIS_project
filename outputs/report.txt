@@ -1,0 +1,258 @@
+──────────────────────────────────────────────────────────────────────
+  TerraTrace — Validation Report
+──────────────────────────────────────────────────────────────────────
+  Cities: 10   Flagged: 0
+
+──────────────────────────────────────────────────────────────────────
+  lat26_667417_lonn99_159667               OK
+  Rows: 10   Duplicate years: 0
+
+  lc_water_pct                           0 rows  [####################]   0.0%
+  lc_trees_pct                           0 rows  [####################]   0.0%
+  lc_grass_pct                           0 rows  [####################]   0.0%
+  lc_flooded_vegetation_pct              0 rows  [####################]   0.0%
+  lc_crops_pct                           0 rows  [####################]   0.0%
+  lc_shrub_and_scrub_pct                 0 rows  [####################]   0.0%
+  lc_built_pct                           0 rows  [####################]   0.0%
+  lc_bare_pct                            0 rows  [####################]   0.0%
+  lc_snow_and_ice_pct                    0 rows  [####################]   0.0%
+  lc_water_conf                          0 rows  [####################]   0.0%
+  lc_trees_conf                          0 rows  [####################]   0.0%
+  lc_grass_conf                          0 rows  [####################]   0.0%
+  lc_flooded_vegetation_conf             0 rows  [####################]   0.0%
+  lc_crops_conf                          0 rows  [####################]   0.0%
+  lc_shrub_and_scrub_conf                0 rows  [####################]   0.0%
+  lc_built_conf                          0 rows  [####################]   0.0%
+  lc_bare_conf                           0 rows  [####################]   0.0%
+  lc_snow_and_ice_conf                   0 rows  [####################]   0.0%
+
+  Overall: [####################]   0.0%
+
+──────────────────────────────────────────────────────────────────────
+  lat29_4241_lonn98_4936                   OK
+  Rows: 10   Duplicate years: 0
+
+  lc_water_pct                           0 rows  [####################]   0.0%
+  lc_trees_pct                           0 rows  [####################]   0.0%
+  lc_grass_pct                           0 rows  [####################]   0.0%
+  lc_flooded_vegetation_pct              0 rows  [####################]   0.0%
+  lc_crops_pct                           0 rows  [####################]   0.0%
+  lc_shrub_and_scrub_pct                 0 rows  [####################]   0.0%
+  lc_built_pct                           0 rows  [####################]   0.0%
+  lc_bare_pct                            0 rows  [####################]   0.0%
+  lc_snow_and_ice_pct                    0 rows  [####################]   0.0%
+  lc_water_conf                          0 rows  [####################]   0.0%
+  lc_trees_conf                          0 rows  [####################]   0.0%
+  lc_grass_conf                          0 rows  [####################]   0.0%
+  lc_flooded_vegetation_conf             0 rows  [####################]   0.0%
+  lc_crops_conf                          0 rows  [####################]   0.0%
+  lc_shrub_and_scrub_conf                0 rows  [####################]   0.0%
+  lc_built_conf                          0 rows  [####################]   0.0%
+  lc_bare_conf                           0 rows  [####################]   0.0%
+  lc_snow_and_ice_conf                   0 rows  [####################]   0.0%
+
+  Overall: [####################]   0.0%
+
+──────────────────────────────────────────────────────────────────────
+  lat29_7604_lonn95_3698                   OK
+  Rows: 10   Duplicate years: 0
+
+  lc_water_pct                           0 rows  [####################]   0.0%
+  lc_trees_pct                           0 rows  [####################]   0.0%
+  lc_grass_pct                           0 rows  [####################]   0.0%
+  lc_flooded_vegetation_pct              0 rows  [####################]   0.0%
+  lc_crops_pct                           0 rows  [####################]   0.0%
+  lc_shrub_and_scrub_pct                 0 rows  [####################]   0.0%
+  lc_built_pct                           0 rows  [####################]   0.0%
+  lc_bare_pct                            0 rows  [####################]   0.0%
+  lc_snow_and_ice_pct                    0 rows  [####################]   0.0%
+  lc_water_conf                          0 rows  [####################]   0.0%
+  lc_trees_conf                          0 rows  [####################]   0.0%
+  lc_grass_conf                          0 rows  [####################]   0.0%
+  lc_flooded_vegetation_conf             0 rows  [####################]   0.0%
+  lc_crops_conf                          0 rows  [####################]   0.0%
+  lc_shrub_and_scrub_conf                0 rows  [####################]   0.0%
+  lc_built_conf                          0 rows  [####################]   0.0%
+  lc_bare_conf                           0 rows  [####################]   0.0%
+  lc_snow_and_ice_conf                   0 rows  [####################]   0.0%
+
+  Overall: [####################]   0.0%
+
+──────────────────────────────────────────────────────────────────────
+  lat30_2672_lonn97_7431                   OK
+  Rows: 10   Duplicate years: 0
+
+  lc_water_pct                           0 rows  [####################]   0.0%
+  lc_trees_pct                           0 rows  [####################]   0.0%
+  lc_grass_pct                           0 rows  [####################]   0.0%
+  lc_flooded_vegetation_pct              0 rows  [####################]   0.0%
+  lc_crops_pct                           0 rows  [####################]   0.0%
+  lc_shrub_and_scrub_pct                 0 rows  [####################]   0.0%
+  lc_built_pct                           0 rows  [####################]   0.0%
+  lc_bare_pct                            0 rows  [####################]   0.0%
+  lc_snow_and_ice_pct                    0 rows  [####################]   0.0%
+  lc_water_conf                          0 rows  [####################]   0.0%
+  lc_trees_conf                          0 rows  [####################]   0.0%
+  lc_grass_conf                          0 rows  [####################]   0.0%
+  lc_flooded_vegetation_conf             0 rows  [####################]   0.0%
+  lc_crops_conf                          0 rows  [####################]   0.0%
+  lc_shrub_and_scrub_conf                0 rows  [####################]   0.0%
+  lc_built_conf                          0 rows  [####################]   0.0%
+  lc_bare_conf                           0 rows  [####################]   0.0%
+  lc_snow_and_ice_conf                   0 rows  [####################]   0.0%
+
+  Overall: [####################]   0.0%
+
+──────────────────────────────────────────────────────────────────────
+  lat32_7555_lonn97_3308                   OK
+  Rows: 10   Duplicate years: 0
+
+  lc_water_pct                           0 rows  [####################]   0.0%
+  lc_trees_pct                           0 rows  [####################]   0.0%
+  lc_grass_pct                           0 rows  [####################]   0.0%
+  lc_flooded_vegetation_pct              0 rows  [####################]   0.0%
+  lc_crops_pct                           0 rows  [####################]   0.0%
+  lc_shrub_and_scrub_pct                 0 rows  [####################]   0.0%
+  lc_built_pct                           0 rows  [####################]   0.0%
+  lc_bare_pct                            0 rows  [####################]   0.0%
+  lc_snow_and_ice_pct                    0 rows  [####################]   0.0%
+  lc_water_conf                          0 rows  [####################]   0.0%
+  lc_trees_conf                          0 rows  [####################]   0.0%
+  lc_grass_conf                          0 rows  [####################]   0.0%
+  lc_flooded_vegetation_conf             0 rows  [####################]   0.0%
+  lc_crops_conf                          0 rows  [####################]   0.0%
+  lc_shrub_and_scrub_conf                0 rows  [####################]   0.0%
+  lc_built_conf                          0 rows  [####################]   0.0%
+  lc_bare_conf                           0 rows  [####################]   0.0%
+  lc_snow_and_ice_conf                   0 rows  [####################]   0.0%
+
+  Overall: [####################]   0.0%
+
+──────────────────────────────────────────────────────────────────────
+  lat32_7767_lonn96_797                    OK
+  Rows: 10   Duplicate years: 0
+
+  lc_water_pct                           0 rows  [####################]   0.0%
+  lc_trees_pct                           0 rows  [####################]   0.0%
+  lc_grass_pct                           0 rows  [####################]   0.0%
+  lc_flooded_vegetation_pct              0 rows  [####################]   0.0%
+  lc_crops_pct                           0 rows  [####################]   0.0%
+  lc_shrub_and_scrub_pct                 0 rows  [####################]   0.0%
+  lc_built_pct                           0 rows  [####################]   0.0%
+  lc_bare_pct                            0 rows  [####################]   0.0%
+  lc_snow_and_ice_pct                    0 rows  [####################]   0.0%
+  lc_water_conf                          0 rows  [####################]   0.0%
+  lc_trees_conf                          0 rows  [####################]   0.0%
+  lc_grass_conf                          0 rows  [####################]   0.0%
+  lc_flooded_vegetation_conf             0 rows  [####################]   0.0%
+  lc_crops_conf                          0 rows  [####################]   0.0%
+  lc_shrub_and_scrub_conf                0 rows  [####################]   0.0%
+  lc_built_conf                          0 rows  [####################]   0.0%
+  lc_bare_conf                           0 rows  [####################]   0.0%
+  lc_snow_and_ice_conf                   0 rows  [####################]   0.0%
+
+  Overall: [####################]   0.0%
+
+──────────────────────────────────────────────────────────────────────
+  lat33_1507_lonn96_8236                   OK
+  Rows: 10   Duplicate years: 0
+
+  lc_water_pct                           0 rows  [####################]   0.0%
+  lc_trees_pct                           0 rows  [####################]   0.0%
+  lc_grass_pct                           0 rows  [####################]   0.0%
+  lc_flooded_vegetation_pct              0 rows  [####################]   0.0%
+  lc_crops_pct                           0 rows  [####################]   0.0%
+  lc_shrub_and_scrub_pct                 0 rows  [####################]   0.0%
+  lc_built_pct                           0 rows  [####################]   0.0%
+  lc_bare_pct                            0 rows  [####################]   0.0%
+  lc_snow_and_ice_pct                    0 rows  [####################]   0.0%
+  lc_water_conf                          0 rows  [####################]   0.0%
+  lc_trees_conf                          0 rows  [####################]   0.0%
+  lc_grass_conf                          0 rows  [####################]   0.0%
+  lc_flooded_vegetation_conf             0 rows  [####################]   0.0%
+  lc_crops_conf                          0 rows  [####################]   0.0%
+  lc_shrub_and_scrub_conf                0 rows  [####################]   0.0%
+  lc_built_conf                          0 rows  [####################]   0.0%
+  lc_bare_conf                           0 rows  [####################]   0.0%
+  lc_snow_and_ice_conf                   0 rows  [####################]   0.0%
+
+  Overall: [####################]   0.0%
+
+──────────────────────────────────────────────────────────────────────
+  lat33_1976_lonn96_6153                   OK
+  Rows: 10   Duplicate years: 0
+
+  lc_water_pct                           0 rows  [####################]   0.0%
+  lc_trees_pct                           0 rows  [####################]   0.0%
+  lc_grass_pct                           0 rows  [####################]   0.0%
+  lc_flooded_vegetation_pct              0 rows  [####################]   0.0%
+  lc_crops_pct                           0 rows  [####################]   0.0%
+  lc_shrub_and_scrub_pct                 0 rows  [####################]   0.0%
+  lc_built_pct                           0 rows  [####################]   0.0%
+  lc_bare_pct                            0 rows  [####################]   0.0%
+  lc_snow_and_ice_pct                    0 rows  [####################]   0.0%
+  lc_water_conf                          0 rows  [####################]   0.0%
+  lc_trees_conf                          0 rows  [####################]   0.0%
+  lc_grass_conf                          0 rows  [####################]   0.0%
+  lc_flooded_vegetation_conf             0 rows  [####################]   0.0%
+  lc_crops_conf                          0 rows  [####################]   0.0%
+  lc_shrub_and_scrub_conf                0 rows  [####################]   0.0%
+  lc_built_conf                          0 rows  [####################]   0.0%
+  lc_bare_conf                           0 rows  [####################]   0.0%
+  lc_snow_and_ice_conf                   0 rows  [####################]   0.0%
+
+  Overall: [####################]   0.0%
+
+──────────────────────────────────────────────────────────────────────
+  lat33_314479_lonn96_77655                OK
+  Rows: 10   Duplicate years: 0
+
+  lc_water_pct                           0 rows  [####################]   0.0%
+  lc_trees_pct                           0 rows  [####################]   0.0%
+  lc_grass_pct                           0 rows  [####################]   0.0%
+  lc_flooded_vegetation_pct              0 rows  [####################]   0.0%
+  lc_crops_pct                           0 rows  [####################]   0.0%
+  lc_shrub_and_scrub_pct                 0 rows  [####################]   0.0%
+  lc_built_pct                           0 rows  [####################]   0.0%
+  lc_bare_pct                            0 rows  [####################]   0.0%
+  lc_snow_and_ice_pct                    0 rows  [####################]   0.0%
+  lc_water_conf                          0 rows  [####################]   0.0%
+  lc_trees_conf                          0 rows  [####################]   0.0%
+  lc_grass_conf                          0 rows  [####################]   0.0%
+  lc_flooded_vegetation_conf             0 rows  [####################]   0.0%
+  lc_crops_conf                          0 rows  [####################]   0.0%
+  lc_shrub_and_scrub_conf                0 rows  [####################]   0.0%
+  lc_built_conf                          0 rows  [####################]   0.0%
+  lc_bare_conf                           0 rows  [####################]   0.0%
+  lc_snow_and_ice_conf                   0 rows  [####################]   0.0%
+
+  Overall: [####################]   0.0%
+
+──────────────────────────────────────────────────────────────────────
+  lat33_3246_lonn96_7869                   OK
+  Rows: 10   Duplicate years: 0
+
+  lc_water_pct                           0 rows  [####################]   0.0%
+  lc_trees_pct                           0 rows  [####################]   0.0%
+  lc_grass_pct                           0 rows  [####################]   0.0%
+  lc_flooded_vegetation_pct              0 rows  [####################]   0.0%
+  lc_crops_pct                           0 rows  [####################]   0.0%
+  lc_shrub_and_scrub_pct                 0 rows  [####################]   0.0%
+  lc_built_pct                           0 rows  [####################]   0.0%
+  lc_bare_pct                            0 rows  [####################]   0.0%
+  lc_snow_and_ice_pct                    0 rows  [####################]   0.0%
+  lc_water_conf                          0 rows  [####################]   0.0%
+  lc_trees_conf                          0 rows  [####################]   0.0%
+  lc_grass_conf                          0 rows  [####################]   0.0%
+  lc_flooded_vegetation_conf             0 rows  [####################]   0.0%
+  lc_crops_conf                          0 rows  [####################]   0.0%
+  lc_shrub_and_scrub_conf                0 rows  [####################]   0.0%
+  lc_built_conf                          0 rows  [####################]   0.0%
+  lc_bare_conf                           0 rows  [####################]   0.0%
+  lc_snow_and_ice_conf                   0 rows  [####################]   0.0%
+
+  Overall: [####################]   0.0%
+
+──────────────────────────────────────────────────────────────────────
+  All cities within threshold.
+──────────────────────────────────────────────────────────────────────

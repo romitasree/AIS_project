@@ -5,34 +5,27 @@ import os
 import re
 import socket
 from datetime import datetime, date
-from pathlib import Path
 from typing import Any, Dict, List, Tuple
 
 from dotenv import load_dotenv
 
-from gee_fetch import get_dw_data, TEXAS_CITIES, dates as DATES
+from gee_fetch import get_dw_data, TEXAS_CITIES, DATES
 from romita_change import calculate_percentage_change
 
 # ---------------------------------------------------------------------------
-# Logging setup — writes to both console and terratrace.log
+# Logging setup — console only
 # ---------------------------------------------------------------------------
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s  %(levelname)-8s  %(name)s — %(message)s",
     datefmt="%Y-%m-%d %H:%M:%S",
-    handlers=[
-        logging.StreamHandler(),
-        logging.FileHandler("terratrace.log", encoding="utf-8"),
-    ],
+    handlers=[logging.StreamHandler()],
 )
 log = logging.getLogger("gemini_integration")
 
 # ---------------------------------------------------------------------------
 # Constants
 # ---------------------------------------------------------------------------
-# Real location labels matching TEXAS_CITIES in gee_fetch.py
-_LOCATION_LABELS = ["Celina, TX", "Falcon Lake, TX"]
-
 # Dynamic World V1 land-cover class names (indices 0-8)
 _DW_CLASSES = [
     "water", "trees", "grass", "flooded_vegetation", "crops",
@@ -222,35 +215,35 @@ def get_real_romita_diffs(date_range=None) -> List[Dict[str, Any]]:
         selected_dates = DATES  # fallback to hardcoded two-period comparison
 
     log.info("get_real_romita_diffs: fetching GEE data for %d locations", len(TEXAS_CITIES))
-    
-    # Create mock data since the actual GEE function signature doesn't match
-    # This is a temporary fix to make the app work
-    flat = []
-    for city in TEXAS_CITIES:
-        for period in selected_dates:
-            # Create mock image data structure
-            mock_data = {
-                "bands": [{
-                    "id": "label",
-                    "data": [1, 1, 2, 2, 6, 6, 1, 2]  # Mock pixel data with trees, grass, built
-                }]
-            }
-            flat.append(mock_data)
+    raw_data = get_dw_data(TEXAS_CITIES, selected_dates)
+    flat = raw_data or []
 
     ok, err_msg = validate_gee_output(flat, label="get_real_romita_diffs")
     if not ok:
         raise RuntimeError(f"GEE data validation failed: {err_msg}")
 
     diffs: List[Dict[str, Any]] = []
-    n_periods = len(selected_dates)
+    if len(selected_dates) < 2:
+        log.warning("get_real_romita_diffs: need at least two periods to compute differences.")
+        return diffs
 
-    for loc_idx, label in enumerate(_LOCATION_LABELS):
-        base = loc_idx * n_periods
-        if base + 1 >= len(flat):
-            log.warning("get_real_romita_diffs: not enough entries for %s — skipping.", label)
+    hist_key = (selected_dates[0]["start"], selected_dates[0]["end"])
+    recent_key = (selected_dates[1]["start"], selected_dates[1]["end"])
+    grouped: Dict[str, Dict[Tuple[str, str], Dict[str, Any]]] = {}
+
+    for entry in flat:
+        label = entry.get("label") or f"{entry.get('lat')},{entry.get('lon')}"
+        grouped.setdefault(label, {})[(entry.get("start"), entry.get("end"))] = entry
+
+    for label, entries_by_period in grouped.items():
+        hist_entry = entries_by_period.get(hist_key)
+        recent_entry = entries_by_period.get(recent_key)
+        if not hist_entry or not recent_entry:
+            log.warning("get_real_romita_diffs: missing comparison period for %s — skipping.", label)
             continue
-        hist_pct = _class_percentages(flat[base])
-        recent_pct = _class_percentages(flat[base + 1])
+
+        hist_pct = _class_percentages(hist_entry)
+        recent_pct = _class_percentages(recent_entry)
         changes = calculate_percentage_change(hist_pct, recent_pct)
         for cls, delta in changes.items():
             if delta != 0.0:
@@ -290,9 +283,33 @@ DATA:
 {data}
 """
 
+REGION_SUMMARY_PROMPT_TEMPLATE = """SYSTEM:
+You are a geospatial analyst for Texas land-use change. Use ONLY the provided data. Do not add facts, locations, or claims not explicitly included.
+
+USER:
+Write one paragraph of no more than 100 words about the primary land-use or environmental impact for the selected region only.
+
+Requirements:
+- Focus only on {region}.
+- Base the paragraph only on the provided land-cover changes.
+- Emphasize the primary impact, not a list of impacts.
+- Do not mention any other region.
+- If the data is insufficient, say "insufficient data".
+
+DATA FOR {region}:
+{data}
+"""
+
 
 def build_prompt(romita_diffs: List[Dict[str, Any]]) -> str:
     return PROMPT_TEMPLATE.format(data=json.dumps(romita_diffs, indent=2))
+
+
+def build_region_summary_prompt(region: str, region_diffs: List[Dict[str, Any]]) -> str:
+    return REGION_SUMMARY_PROMPT_TEMPLATE.format(
+        region=region,
+        data=json.dumps(region_diffs, indent=2),
+    )
 
 
 def _safe_default_response(romita_diffs: List[Dict[str, Any]]) -> str:
@@ -306,6 +323,13 @@ def _safe_default_response(romita_diffs: List[Dict[str, Any]]) -> str:
         )
     result_text = "\n".join(text_parts)
     return f"{result_text}\n\nNote: Only percentage differences were provided; impacts require additional local context."
+
+
+def _safe_region_summary(region: str) -> str:
+    return (
+        f"Insufficient data to determine the primary land-use impact for {region} "
+        "from the provided land-cover changes."
+    )
 
 
 def _extract_json(text: str) -> Dict[str, Any] | None:
@@ -393,6 +417,68 @@ def call_gemini_for_impacts(
         log.error("call_gemini_for_impacts: %s", msg)
         return _safe_default_response(romita_diffs), msg
 
+
+def call_gemini_for_region_summary(
+    romita_diffs: List[Dict[str, Any]],
+    region: str,
+    model_name: str = "gemini-2.5-flash",
+) -> Tuple[str, str | None]:
+    region_diffs = [item for item in romita_diffs if item.get("region") == region]
+    if not region_diffs:
+        msg = f"No land-cover differences found for {region}."
+        log.warning("call_gemini_for_region_summary: %s", msg)
+        return _safe_region_summary(region), msg
+
+    prompt = build_region_summary_prompt(region, region_diffs)
+    api_key = _load_api_key()
+
+    if not api_key:
+        msg = "No Gemini API key found. Set GOOGLE_API_KEY or GEMINI_API_KEY in your environment or Streamlit secrets."
+        log.error("call_gemini_for_region_summary: %s", msg)
+        return _safe_region_summary(region), msg
+
+    try:
+        socket.setdefaulttimeout(5)
+        socket.getaddrinfo("generativelanguage.googleapis.com", 443)
+    except OSError:
+        msg = "No internet connection. Please check your network and try again."
+        log.error("call_gemini_for_region_summary: %s", msg)
+        return _safe_region_summary(region), msg
+
+    try:
+        import google.generativeai as genai
+
+        genai.configure(api_key=api_key)
+        model = genai.GenerativeModel(model_name)
+        response = model.generate_content(
+            prompt,
+            request_options={"timeout": 30},
+        )
+        text = (response.text or "").strip() or _safe_region_summary(region)
+        log.info("call_gemini_for_region_summary: success for %s (%d chars returned).", region, len(text))
+        return text, None
+
+    except Exception as exc:
+        exc_str = str(exc).lower()
+
+        if "429" in exc_str or "quota" in exc_str or "rate" in exc_str:
+            msg = "Gemini API rate limit reached. Please wait a moment and try again."
+            log.warning("call_gemini_for_region_summary: rate limit — %s", exc)
+        elif "401" in exc_str or "403" in exc_str or "api key" in exc_str or "permission" in exc_str:
+            msg = "Gemini API key is invalid or lacks permission. Check your GOOGLE_API_KEY."
+            log.error("call_gemini_for_region_summary: auth error — %s", exc)
+        elif "timeout" in exc_str or "deadline" in exc_str or "timed out" in exc_str:
+            msg = "Gemini API request timed out (>30 s). Check your connection or try again later."
+            log.warning("call_gemini_for_region_summary: timeout — %s", exc)
+        elif "503" in exc_str or "unavailable" in exc_str or "overloaded" in exc_str:
+            msg = "Gemini API is temporarily unavailable. Please try again in a few minutes."
+            log.warning("call_gemini_for_region_summary: service unavailable — %s", exc)
+        else:
+            msg = f"Gemini API error: {exc}"
+            log.error("call_gemini_for_region_summary: unexpected error — %s", exc)
+
+        return _safe_region_summary(region), msg
+
     # Quick connectivity check before hitting the API
     try:
         socket.setdefaulttimeout(5)
@@ -447,34 +533,35 @@ def call_gemini_for_impacts(
 
 
 def _load_api_key() -> str | None:
-    load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), ".env"))
+ load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), ".env"))
 
-    api_key = os.environ.get("GOOGLE_API_KEY") or os.environ.get("GEMINI_API_KEY")
-    if api_key:
-        return api_key
+ api_key = os.environ.get("GOOGLE_API_KEY") or os.environ.get("GEMINI_API_KEY")
+ if api_key:
+    return api_key
 
-    env_path = Path(__file__).resolve().with_name(".env")
-    if env_path.exists():
-        try:
-            for line in env_path.read_text(encoding="utf-8").splitlines():
-                raw_line = line.strip()
-                if not raw_line or raw_line.startswith("#") or "=" not in raw_line:
-                    continue
+    # env_path = Path(__file__).resolve().with_name(".env")
+    # if env_path.exists():
+    #     try:
+    #         for line in env_path.read_text(encoding="utf-8").splitlines():
+    #             raw_line = line.strip()
+    #             if not raw_line or raw_line.startswith("#") or "=" not in raw_line:
+    #                 continue
 
-                key, value = raw_line.split("=", 1)
-                key = key.strip()
-                value = value.strip().strip('"').strip("'")
+    #             key, value = raw_line.split("=", 1)
+    #             key = key.strip()
+    #             value = value.strip().strip('"').strip("'")
 
-                if key in {"GOOGLE_API_KEY", "GEMINI_API_KEY"} and value:
-                    return value
-        except OSError:
-            pass
+    #             if key in {"GOOGLE_API_KEY", "GEMINI_API_KEY"} and value:
+    #                 return value
+    #     except OSError:
+    #         pass
 
-    try:
-        import streamlit as st
-        return st.secrets.get("GOOGLE_API_KEY") or st.secrets.get("GEMINI_API_KEY")
-    except Exception:
-        return None
+    # try:
+    #     import streamlit as st
+
+    #     return st.secrets.get("GOOGLE_API_KEY") or st.secrets.get("GEMINI_API_KEY")
+    # except Exception:
+    #     return None
 
 
 if __name__ == "__main__":

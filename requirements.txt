@@ -1,0 +1,12 @@
+google-generativeai
+python-dotenv
+streamlit
+earthengine-api
+google-cloud-storage
+pandas
+numpy
+scikit-learn
+tensorflow
+tqdm
+streamlit-folium
+python-dotenv
